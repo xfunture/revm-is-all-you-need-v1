@@ -305,7 +305,7 @@ pub async fn benchmark_function() {
 
     // eth_call simulation
     {
-        let mut tooks = Vec::new();
+        let mut tooks : Vec<f32> = Vec::new();
 
         for _ in 0..runs {
             let s = Instant::now();
@@ -320,21 +320,21 @@ pub async fn benchmark_function() {
             )
             .await
             .unwrap();
-            let took = s.elapsed().as_micros();
-            tooks.push(took as i32);
+            let took: f32 = s.elapsed().as_secs_f32();
+            tooks.push(took as f32);
             info!(
-                "[eth_call] Result: {:?} / Took: {:?} microseconds",
+                "[eth_call] Result: {:?} / Took: {:?} seconds",
                 out, took
             );
         }
 
-        let avg_took = tooks.clone().into_iter().sum::<i32>() / (tooks.len() as i32);
-        info!("[eth_call] Average took: {:?} microseconds", avg_took);
+        let avg_took = tooks.clone().into_iter().sum::<f32>() / (tooks.len() as f32);
+        info!("[eth_call] Average took: {:?} seconds", avg_took);
     }
 
     // revm simulation
     {
-        let mut tooks = Vec::new();
+        let mut tooks: Vec<f32> = Vec::new();
 
         for _ in 0..runs {
             let mut evm = create_evm_instance();
@@ -357,18 +357,18 @@ pub async fn benchmark_function() {
             )
             .await
             .unwrap();
-            let took = s.elapsed().as_micros();
-            tooks.push(took as i32);
-            info!("[revm] Result: {:?} / Took: {:?} microseconds", out, took);
+            let took = s.elapsed().as_secs_f32();
+            tooks.push(took as f32);
+            info!("[revm] Result: {:?} / Took: {:?} seconds", out, took);
         }
 
-        let avg_took = tooks.clone().into_iter().sum::<i32>() / (tooks.len() as i32);
-        info!("[revm] Average took: {:?} microseconds", avg_took);
+        let avg_took = tooks.clone().into_iter().sum::<f32>() / (tooks.len() as f32);
+        info!("[revm] Average took: {:?} seconds", avg_took);
     }
 
     // foundry simulation
     {
-        let mut tooks = Vec::new();
+        let mut tooks : Vec<f32> = Vec::new();
 
         for _ in 0..runs {
             let s = Instant::now();
@@ -382,15 +382,15 @@ pub async fn benchmark_function() {
             )
             .await
             .unwrap();
-            let took = s.elapsed().as_micros();
-            tooks.push(took as i32);
+            let took = s.elapsed().as_secs_f32();
+            tooks.push(took as f32);
             info!(
-                "[foundry] Result: {:?} / Took: {:?} microseconds",
+                "[foundry] Result: {:?} / Took: {:?} seconds",
                 out, took
             );
         }
 
-        let avg_took = tooks.clone().into_iter().sum::<i32>() / (tooks.len() as i32);
-        info!("[revm] Average took: {:?} microseconds", avg_took);
+        let avg_took = tooks.clone().into_iter().sum::<f32>() / (tooks.len() as f32);
+        info!("[revm] Average took: {:?} seconds", avg_took);
     }
 }
